@@ -10,26 +10,33 @@ export const App = () => {
 
   const [hideCompleted, setHideCompleted] = useState(false);
 
-  const userFilter = user ? { userId: user._id } : {};
-  const hideCompletedFilter = { isChecked: { $ne: true } };
-  const pendingOnlyFilter = { ...userFilter, ...hideCompletedFilter };
   //seems the ueTracker is like useQuery
   //it only fetches when it needs to
   //somehow it doesnt fetch when changing hideCompleted
-  const tasks = useTracker(() => {
-    if (!user) return [];
-    return TasksCollection.find(
+  const { tasks, pendingTasksCount, isLoading } = useTracker(() => {
+    const noDataAvailable = { tasks: [], pendingTasksCount: 0 };
+    if (!Meteor.user()) {
+      return noDataAvailable;
+    }
+
+    const handler = Meteor.subscribe('tasks');
+    if (!handler.ready()) {
+      return { ...noDataAvailable, isLoading: true };
+    }
+
+    const userFilter = user ? { userId: user._id } : {};
+    const hideCompletedFilter = { isChecked: { $ne: true } };
+    const pendingOnlyFilter = { ...userFilter, ...hideCompletedFilter };
+
+    const tasks = TasksCollection.find(
       hideCompleted ? pendingOnlyFilter : userFilter,
-      {
-        sort: { createdAt: -1 },
-      }
+      { sort: { createdAt: -1 } }
     ).fetch();
+    const pendingTasksCount = TasksCollection.find(pendingOnlyFilter).count();
+
+    return { tasks, pendingTasksCount };
   });
 
-  const pendingTasksCount = useTracker(() => {
-    if (!user) return 0;
-    return TasksCollection.find(pendingOnlyFilter).count();
-  });
   const pendingTasksTitle = `${
     pendingTasksCount ? ` (${pendingTasksCount})` : ''
   }`;

@@ -23,3 +23,5 @@ dev-error-overlay
 accounts-password
 accounts-github
 service-configuration
+meteortesting:mocha
+quave:testing

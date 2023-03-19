@@ -3,13 +3,11 @@ body {
   background-color: #315481;
   background-image: linear-gradient(to bottom, #315481, #918e82 100%);
   background-attachment: fixed;
-
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-
   padding: 0;
   margin: 0;
 
@@ -80,9 +78,7 @@ header {
 /* user */
 .user {
   display: flex;
-
   align-self: flex-end;
-
   margin: 8px 16px 0;
   font-weight: bold;
 }
@@ -93,7 +89,6 @@ header {
   display: flex;
   flex-direction: column;
   height: 100%;
-
   justify-content: center;
   align-items: center;
 }
@@ -181,6 +176,15 @@ header {
   background-color: #62807e;
 }
 
+/* loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
 
 /* tasks */
 .tasks {

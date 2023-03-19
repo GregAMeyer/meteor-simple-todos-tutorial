@@ -6,15 +6,8 @@ export const TaskForm = ({user}) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
     if (!text) return;
-
-    TasksCollection.insert({
-      text: text.trim(),
-      createdAt: new Date(),
-      userId: user._id
-    });
-
+    Meteor.call('tasks.insert', text);
     setText("");
   };
  

@@ -37,15 +37,11 @@ export const App = () => {
   const logout = () => Meteor.logout();
 
   const toggleChecked = ({ _id, isChecked }) => {
-    TasksCollection.update(_id, {
-      $set: {
-        isChecked: !isChecked
-      }
-    })
+    Meteor.call('tasks.setIsChecked', _id, !isChecked);
   };
 
   const deleteTask = ({ _id }) => {
-    TasksCollection.remove(_id)
+    Meteor.call('tasks.remove', _id);
   };
   
   return (
@@ -67,7 +63,7 @@ export const App = () => {
             <div className="user" onClick={logout}>
               {user.username || user.profile.name} 🚪
             </div>
-            <TaskForm user={user} />
+            <TaskForm />
 
             <div className="filter">
               <button onClick={() => setHideCompleted(!hideCompleted)}>
